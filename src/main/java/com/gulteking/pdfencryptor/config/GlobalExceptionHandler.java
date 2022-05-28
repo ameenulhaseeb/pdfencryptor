@@ -16,19 +16,19 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = PdfException.class)
     public ResponseEntity<ExceptionModel> pdfException(PdfException exception) {
-        log.error("PdfException", exception);
+       // log.error("PdfException", exception);
         return new ResponseEntity<>(toExceptionModel(exception), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = InternalException.class)
     public ResponseEntity<ExceptionModel> internalException(InternalException exception) {
-        log.error("InternalException", exception);
+       // log.error("InternalException", exception);
         return new ResponseEntity<>(toExceptionModel(exception), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<ExceptionModel> unhandledException(Exception exception) {
-        log.error("Unhandled Exception", exception);
+        //log.error("Unhandled Exception", exception);
         ExceptionModel exceptionModel = toExceptionModel(exception);
         exceptionModel.setErrorDescription(ExceptionMessages.UNHANDLED_EXCEPTION);
         if (exceptionModel.getInternalErrorDescription() != null) {

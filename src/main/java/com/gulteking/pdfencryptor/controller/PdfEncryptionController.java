@@ -5,6 +5,13 @@ import com.gulteking.pdfencryptor.exception.PdfException;
 import com.gulteking.pdfencryptor.service.PdfEncryptorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,12 +24,35 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/pdf")
 @RequiredArgsConstructor
 public class PdfEncryptionController {
-    private final PdfEncryptorService pdfEncryptorService;
-
+    private final PdfEncryptorService pdfEncryptorService = new PdfEncryptorService();
+    static String FILEPATH = "D:/Data.pdf";
+    static File file1 = new File(FILEPATH);
     @PostMapping(produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public byte[] encryptPdf(@RequestParam("file") MultipartFile file,
                              @RequestParam("password") String password) {
         validatePdf(file);
+       byte[] bytes= pdfEncryptorService.encryptPdf(file, password);
+        // Initialize a pointer in file
+        // using OutputStream
+        OutputStream os;
+		try {
+			os = new FileOutputStream(file1);
+		    // Starting writing the bytes in it
+	        os.write(bytes);
+
+	        // Display message onconsole for successful
+	        // execution
+	        System.out.println("Successfully"
+	                           + " byte inserted");
+
+	        // Close the file connections
+	        os.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+    
         return pdfEncryptorService.encryptPdf(file, password);
     }
 

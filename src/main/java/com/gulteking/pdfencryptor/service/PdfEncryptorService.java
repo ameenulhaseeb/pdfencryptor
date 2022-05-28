@@ -35,7 +35,7 @@ public class PdfEncryptorService {
             StandardProtectionPolicy spp = new StandardProtectionPolicy(
                     password, password, ap);
 
-            spp.setEncryptionKeyLength(keyLength);
+            spp.setEncryptionKeyLength(256);
             doc.protect(spp);
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -44,7 +44,7 @@ public class PdfEncryptorService {
 
             return baos.toByteArray();
         } catch (Exception ex) {
-            log.error("Exception occured while encrypting pdf", ex);
+           // log.error("Exception occured while encrypting pdf", ex);
             throw new InternalException(ExceptionMessages.UNHANDLED_EXCEPTION, ex);
         }
     }
