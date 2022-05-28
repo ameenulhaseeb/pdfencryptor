@@ -42,9 +42,8 @@ public class PdfEncryptionController {
 
 	        // Display message onconsole for successful
 	        // execution
-	        System.out.println("Successfully"
-	                           + " byte inserted");
-
+	  
+	        log.info("uccessfully byte inserted");
 	        // Close the file connections
 	        os.close();
 		} catch (IOException e) {

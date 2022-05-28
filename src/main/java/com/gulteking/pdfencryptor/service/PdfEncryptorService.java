@@ -6,7 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
 import org.apache.pdfbox.pdmodel.encryption.StandardProtectionPolicy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,12 +17,17 @@ import java.io.ByteArrayOutputStream;
 
 @Slf4j
 @Service
+@PropertySource("classpath:application.properties")
 public class PdfEncryptorService {
     @Value("${pdf.key.length}")
     private int keyLength;
 
+    @Autowired
+    private Environment env;
+    
     public byte[] encryptPdf(MultipartFile file, String password) {
         try {
+        	//int keyLength=Integer.parseInt(env.getProperty("pdf.key.length"));
             byte[] sourcePdfBytes = file.getBytes();
             PDDocument doc = PDDocument.load(sourcePdfBytes);
 
@@ -44,7 +52,7 @@ public class PdfEncryptorService {
 
             return baos.toByteArray();
         } catch (Exception ex) {
-           // log.error("Exception occured while encrypting pdf", ex);
+            log.error("Exception occured while encrypting pdf", ex);
             throw new InternalException(ExceptionMessages.UNHANDLED_EXCEPTION, ex);
         }
     }
